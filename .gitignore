@@ -1,0 +1,4 @@
+# Don't include fiels with these extensions
+*.o
+*.out
+*.pvt
