@@ -15,20 +15,40 @@ struct btree {
 };
 
 void insert(struct btree* tree, int val) {
-	
+    
+    struct node* node = tree->root;
+    struct node* node2 = (struct node*)malloc(sizeof(struct node));
+    node2->val = val;
+    node2->left = NULL;
+    node2->right = NULL;
+    if(tree == NULL) {
+        tree = (struct btree*) malloc(sizeof(struct btree));
+        tree->root = node2;
+    } else if (node == NULL) {
+        node = node2;
+    } else {
+        while(node != NULL) {
+            node = node->left;
+        }
+        node = node2;
+    }
+}
+    
 	// TODO: Implement insertion.
+    /*
     if (tree == NULL) {
-        struct tempNode = (struct node *)malloc(sizeof(struct node));
+        struct node* tempNode = (struct node*)malloc(sizeof(struct node));
         tempNode->left = NULL;
         tempNode->right = NULL;
         tempNode->val = val;
         tree->root = tempNode;
-    } else if (tree->val < val) {
-        tree->right = insert(tree->right, val);
     } else {
-        tree->left = insert(tree->left, val);
+        struct btree* temp2 = (struct btree*)malloc(sizeof(struct btree));
+        temp2->root = tree->root->right;
+        insert(temp2, val);
     }
-}
+    */
+                                                    
 
 struct btree* populate(int size) {
 
@@ -36,7 +56,7 @@ struct btree* populate(int size) {
 	srand(time(NULL));
     
     //Not sure about the *size, seems like it should be needed but who knows, it's C!
-    struct tree = (struct btree *)malloc(sizeof(btree)*size);
+    struct btree* tree = (struct btree *)malloc(sizeof(struct btree)*size);
     tree->root = NULL;
     
 	// TODO: Insert 'size' number of random nodes.
