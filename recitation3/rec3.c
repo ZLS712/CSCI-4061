@@ -13,19 +13,20 @@ int main(int argc, char** argv) {
 	}
 
 	// TODO: Fill in your code here.
-//    int input = atoi(argv[1]);
     pid_t pid = fork();
     if (pid ==  0) {
-        execl("./rtime.o","dummy",argv[1],(char*)NULL);
+        execl("./rtime.o", "useless", argv[1], (char*)NULL);
 				printf("execl failed \n");
     } else {
         wait(&pid);
-	pid = fork();
-fflush(stdout);
-	if(pid == 0) {
-		execv("rtime.o", argv);
-		printf("execv failed \n");
-		}else{
-wait(NULL);}
+        pid = fork();
+        fflush(stdout);
+        if(pid == 0) {
+            execv("rtime.o", argv);
+            printf("execv failed \n");
+        } else {
+            wait(pid);
+        }
     }
+    
 }
