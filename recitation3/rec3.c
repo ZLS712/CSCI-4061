@@ -13,17 +13,18 @@ int main(int argc, char** argv) {
 	}
 
 	// TODO: Fill in your code here.
-    int input = argv[1];
+    int input = atoi(argv[1]);
+		int *child_status;
     pid_t pid = fork();
     if (pid <=  0) {
-        waitpid();
         execl("/Users/shridharsukhani/Desktop/School/CSCI-4061/recitation3/rtime.o", "/Users/shridharsukhani/Desktop/School/CSCI-4061/recitation3/rtime.o", input, (char*) NULL);
     } else {
+				wait(&pid);
         pid_t pid = fork();
         if (pid <= 0) {
             // Do the execv shiz here
         }
     }
-    
+
 
 }
