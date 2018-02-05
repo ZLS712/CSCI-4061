@@ -14,19 +14,16 @@ int main(int argc, char** argv) {
 
 	// TODO: Fill in your code here.
     int input = atoi(argv[1]);
-    int *child_status;
     pid_t pid = fork();
-    if (pid <=  0) {
-        execl("rtime.o", "useless", input, (char*) NULL);
+    if (pid ==  0) {
+        execl("rtime.o", "useless", input, (char*)NULL);
+				printf("execl failed \n");
     } else {
         wait(&pid);
-        pid_t pid = fork();
-        if (pid <= 0) {
-            int* temp = (int*)malloc(sizeof(int));
-            *temp = input;
-            execv("rtime.o", &argv[1]);
-        }
+				pid = fork();
+				if(pid == 0) {
+					execv("rtime.o", argv);
+					printf("execv failed \n");
+				}
     }
-
-
 }
