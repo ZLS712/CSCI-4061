@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
             execv("rtime.o", argv);
             printf("execv failed \n");
         } else {
-            wait(pid);
+            wait(&pid);
         }
     }
     
