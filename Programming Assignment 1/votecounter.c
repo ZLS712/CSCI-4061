@@ -35,7 +35,9 @@
  This gets run only once, after all other nodes are done executing
  It uses: ./find_winner <arguments> [Refer utility handbook]
  */
-int parseInput(char *filename, node_t *n);
+int parseInput(char *filename, node_t *n) {
+
+}
 
 /**Function : parseInputLine
  * Arguments: 's' - Line to be parsed
@@ -51,7 +53,9 @@ int parseInput(char *filename, node_t *n);
  * 4) All the other lines containing data, will show how to connect the nodes together
  * You can choose to do this by having a pointer to other nodes, or in a list etc-
  * */
-int parseInputLine(char *s, node_t *n);
+int parseInputLine(char *s, node_t *n) {
+
+}
 
 /**Function : execNodes
  * Arguments: 'n' - Pointer to Nodes to be allocated by parsing
@@ -60,7 +64,9 @@ int parseInputLine(char *s, node_t *n);
  * Please note that processes which are independent of each other
  * can and should be running in a parallel fashion
  * */
-void execNodes(node_t *n);
+void execNodes(node_t *n) {
+
+}
 
 
 int main(int argc, char **argv){
