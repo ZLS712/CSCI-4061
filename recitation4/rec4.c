@@ -17,4 +17,34 @@ int main(int argc, char** argv) {
 	}
 
 	// TODO: Your code goes here.
+	int fd[2];
+	pipe(fd);
+	int argument = atoi(argv[1]);
+	pid_t pid = fork();
+
+	//Rerouting output to file
+
+
+	if (pid == 0) {
+		int fdOutput = open("output.txt", O_WRONLY);
+		close(fd[0]);
+		dup2(fdOutput, STDOUT_FILENO);
+		write(fd[1], "output.txt", 100);
+		chmod("sol.o", 700);
+		chmod("rec3.o", 700);
+		execl("./rec3.o", "useless", atoi(argv[1]), (char*)NULL);
+		close(fd[1]);
+	}	else {
+		wait(&pid);
+		char buffer[100];
+		fflush(stdout);
+		//open(fd[0]);
+		read(fd[0], buffer, 100);
+		printf("%s\n",buffer);
+		int outputFd = open(buffer, O_RDONLY);
+		char buffer1[1000];
+		read(outputFd, buffer1, 1000);
+		printf("%s\n",buffer1);
+		fflush(stdout);
+	}
 }
