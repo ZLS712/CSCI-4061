@@ -26,8 +26,8 @@ int main(int argc, char** argv) {
 
 
 	if (pid == 0) {
-		int fdOutput = open("output.txt", O_WRONLY);
-		close(fd[0]);
+		int fdOutput = open("output.txt", O_WRONLY|O_CREAT);
+		//close(fd[0]);
 		dup2(fdOutput, STDOUT_FILENO);
 		write(fd[1], "output.txt", 100);
 		chmod("sol.o", 700);
@@ -42,8 +42,9 @@ int main(int argc, char** argv) {
 		read(fd[0], buffer, 100);
 		printf("%s\n",buffer);
 		int outputFd = open(buffer, O_RDONLY);
-		char buffer1[1000];
-		read(outputFd, buffer1, 1000);
+		char buffer1[11];
+		read(outputFd, buffer1, 11);
+
 		printf("%s\n",buffer1);
 		fflush(stdout);
 	}
