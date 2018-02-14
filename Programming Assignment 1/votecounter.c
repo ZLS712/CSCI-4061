@@ -13,7 +13,7 @@
 #include "makeargv.h"
 
 #define MAX_NODES 100
-
+/**
 typedef struct node {
 	char name[1024];
 	char prog[1024];
@@ -24,7 +24,7 @@ typedef struct node {
 	pid_t pid;
 	int id;
 } node_t;
-
+*/
 //Function signatures
 
 /**Function : parseInput
@@ -47,7 +47,7 @@ typedef struct node {
  */
 int parseInput(char *filename, node_t *n) {
 
-	// Open Input file
+	/** Open Input file
 	FILE* f = file_open(filename);
 
 	// Read Input File Line By line calling parseInputLine on each line and ignore empty lines
@@ -62,7 +62,7 @@ int parseInput(char *filename, node_t *n) {
 	// Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
 		// Check if it's the root node
-		if(n->name == "Who_Won") {
+		if((*n)->name == "Who_Won") {
 			n->prog = "./find_winner";
 		} else if(n->num_children == 0) {
 			n->prog = "./leafcounter";
@@ -71,6 +71,7 @@ int parseInput(char *filename, node_t *n) {
 		}
 		n ++;
 	}
+	*/
 
 }
 
@@ -120,6 +121,7 @@ int main(int argc, char **argv){
 
 	//Call execNodes on the root node
 	//Written by Shri on Wednesday Feb 14 at 1:29 PM
+	/**
 	while(mainnodes != NULL && mainnodes->name != "Who_Won") {
 		mainnodes ++;
 	}
@@ -127,6 +129,7 @@ int main(int argc, char **argv){
 	if (mainnodes != NULL) {
 		execNodes(mainnodes);
 	}
+	*/
 
 	return 0;
 }
