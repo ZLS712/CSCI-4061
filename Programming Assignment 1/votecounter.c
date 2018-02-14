@@ -10,6 +10,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "makeargv.h"
 
 #define MAX_NODES 100
@@ -51,7 +52,30 @@ int parseInput(char *filename, node_t *n);
  * 4) All the other lines containing data, will show how to connect the nodes together
  * You can choose to do this by having a pointer to other nodes, or in a list etc-
  * */
-int parseInputLine(char *s, node_t *n);
+int parseInputLine(char *s, node_t *n) {
+	char **strings = (char **)malloc(1024 * sizeof(char *));
+	if(makeargv(s, ":", &strings) == sizeof(s)) {
+		int length = makeargv(s, " ", &strings);
+		if(isdigit(strings[0])) {
+			char *candidates = (char *)malloc(strings[0] * sizeof(char));
+			for(int i = 0; i < length; i++) {
+				candidates[i] = strings[i+1];
+				}
+			return 0;
+	}
+		else if(strings[0] == "Who_Won") {
+			struct node *root = (struct node *) malloc(sizeof(struct node));
+			root->name = "Who_Won";
+			return 0;
+		}
+	}
+	else {
+		int len = makeargv(s, ":", &strings);
+	      	int elements_len = makeargv(&strings, " ", &strings);
+			
+	}
+
+};
 
 /**Function : execNodes
  * Arguments: 'n' - Pointer to Nodes to be allocated by parsing
