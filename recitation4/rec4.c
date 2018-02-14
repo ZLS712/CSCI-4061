@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 		chmod("rec3.o", 700);
 		execl("./rec3.o", "useless", atoi(argv[1]), (char*)NULL);
 		close(fd[1]);
-	}	else {
+	} else {
 		wait(&pid);
 		char buffer[100];
 		fflush(stdout);
