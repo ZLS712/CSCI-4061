@@ -27,10 +27,10 @@ int makeargv(const char*s, const char *delimiters, char ***argvp){
 	if ((s == NULL) || (delimiters == NULL) || (argvp == NULL)){
 
 		errno = EINVAL;
-		return -1;	
+		return -1;
 
 	}
-	
+
 	*argvp = NULL; // already assigned as a new var, just blanking out
 
 	snew = s + strspn(s, delimiters);
@@ -94,7 +94,7 @@ char *trimwhitespace(char *str)
 node_t* findnode(node_t* start, char* tobefound){
 	//Find the node in question
 		node_t* temp = start;
-		while(temp->id!=NULL){
+		while((*temp)->id!=NULL){
 			if( (strcmp(temp->name, tobefound)==0)){
 				return temp;
 			}
