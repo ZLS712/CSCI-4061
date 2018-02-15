@@ -59,8 +59,6 @@ int parseInput(char *filename, node_t *n) {
 	// Open Input file
 	FILE* f = file_open(filename);
 
-<<<<<<< HEAD
-=======
 	// Read Input File Line By line calling parseInputLine on each line and ignore empty lines
 	char* buf = (char*)malloc(sizeof(char)*1024);
 
@@ -70,7 +68,7 @@ int parseInput(char *filename, node_t *n) {
 		}
 	}
 
-// Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
+        // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
 		// Check if it's the root node
 		if(n->name == "Who_Won") {
@@ -83,7 +81,7 @@ int parseInput(char *filename, node_t *n) {
 		n ++;
 	}
 }
->>>>>>> de2c9f0b381d5707d131977d40688bdcea5c0280
+
 
 /**Function : parseInputLine
  * Arguments: 's' - Line to be parsed
