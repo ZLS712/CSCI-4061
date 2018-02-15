@@ -17,6 +17,51 @@
 
 //Function signatures
 
+/**Function : parseInputLine
+ * Arguments: 's' - Line to be parsed
+ * 			  'n' - Pointer to Nodes to be allocated by parsing
+ * Output: Number of Region Nodes allocated
+ * About parseInputLine: parseInputLine is supposed to
+ * 1) Split the Input file [Hint: Use makeargv(..)]
+ * 2) Recognize the line containing information of
+ * candidates(You can assume this will always be the first line containing data).
+ * You may want to store the candidate's information
+ * 3) Recognize the line containing "All Nodes"
+ * (You can assume this will always be the second line containing data)
+ * 4) All the other lines containing data, will show how to connect the nodes together
+ * You can choose to do this by having a pointer to other nodes, or in a list etc-
+ */
+
+/** This isn't done quite yet, but here's what I have so far **/
+int parseInputLine(char *s, node_t *n) {
+	char **strings = (char **)malloc(1024 * sizeof(char *));
+	if(makeargv(s, ":", &strings) == sizeof(s)) {
+		int length = makeargv(s, " ", &strings);
+		if(isdigit(strings[0])) {
+			char *candidates = (char *)malloc(strings[0] * sizeof(char));
+			for(int i = 0; i < length; i++) {
+				candidates[i] = strings[i+1];
+				}
+			return 0;
+	}
+		else if(strings[0] == "Who_Won") {
+			struct node *root = (struct node *) malloc(sizeof(struct node));
+			root->name = "Who_Won";
+			root->num_children = sizeof(strings) - 1;
+			for(int i = 0; i < root->num_children; i++) {
+				root->children = strings[i+1];
+			}
+			return 0;
+		}
+	}
+	else {
+		int len = makeargv(s, ":", &strings);
+	      	int elements_len = makeargv(&strings, " ", &strings);
+		return 0;
+	}
+
+}
+
 /**Function : parseInput
  * Arguments: 'filename' - name of the input file
  * 			  'n' - Pointer to Nodes to be allocated by parsing
@@ -62,51 +107,6 @@ int parseInput(char *filename, node_t *n) {
 	}
 }
 
-
-/**Function : parseInputLine
- * Arguments: 's' - Line to be parsed
- * 			  'n' - Pointer to Nodes to be allocated by parsing
- * Output: Number of Region Nodes allocated
- * About parseInputLine: parseInputLine is supposed to
- * 1) Split the Input file [Hint: Use makeargv(..)]
- * 2) Recognize the line containing information of
- * candidates(You can assume this will always be the first line containing data).
- * You may want to store the candidate's information
- * 3) Recognize the line containing "All Nodes"
- * (You can assume this will always be the second line containing data)
- * 4) All the other lines containing data, will show how to connect the nodes together
- * You can choose to do this by having a pointer to other nodes, or in a list etc-
- * */
-
-/** This isn't done quite yet, but here's what I have so far **/
-int parseInputLine(char *s, node_t *n) {
-	char **strings = (char **)malloc(1024 * sizeof(char *));
-	if(makeargv(s, ":", &strings) == sizeof(s)) {
-		int length = makeargv(s, " ", &strings);
-		if(isdigit(strings[0])) {
-			char *candidates = (char *)malloc(strings[0] * sizeof(char));
-			for(int i = 0; i < length; i++) {
-				candidates[i] = strings[i+1];
-				}
-			return 0;
-	}
-		else if(strings[0] == "Who_Won") {
-			struct node *root = (struct node *) malloc(sizeof(struct node));
-			root->name = "Who_Won";
-			root->num_children = sizeof(strings) - 1;
-			for(int i = 0; i < root->num_children; i++) {
-				root->children = strings[i+1];
-			}
-			return 0;
-		}
-	}
-	else {
-		int len = makeargv(s, ":", &strings);
-	      	int elements_len = makeargv(&strings, " ", &strings);
-		return 0;	
-	}
-
-};
 /**Function : execNodes
  * Arguments: 'n' - Pointer to Nodes to be allocated by parsing
  * About execNodes: parseInputLine is supposed to
