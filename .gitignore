@@ -1,4 +1,7 @@
 # Don't include fiels with these extensions
-*.o
+sol.o
+rec4.o
+rtime.o
+rec3.o
 *.out
 *.pvt
