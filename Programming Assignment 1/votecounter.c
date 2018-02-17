@@ -32,6 +32,14 @@
  * You can choose to do this by having a pointer to other nodes, or in a list etc-
  */
 
+struct node *newNode(char *name, int id) {
+	struct node *temp = (struct node *)malloc(sizeof(struct node));
+	temp->name = name;
+	temp->id = id;
+	return temp;
+}
+
+
 /** This isn't done quite yet, but here's what I have so far **/
 int parseInputLine(char *s, node_t *n) {
 	char **strings = (char **)malloc(1024 * sizeof(char *));
@@ -47,9 +55,11 @@ int parseInputLine(char *s, node_t *n) {
 		else if(strings[0] == "Who_Won") {
 			struct node *root = (struct node *) malloc(sizeof(struct node));
 			root->name = "Who_Won";
-			root->num_children = sizeof(strings) - 1;
-			for(int i = 0; i < root->num_children; i++) {
-				root->children = strings[i+1];
+			node **queue = (node **)malloc(sizeof(strings) * sizeof(node));
+			*queue[0] = *root;
+			for(int i = 1; i < sizeof(strings); i++) {
+				struct node *child = newNode(strings[i], i);
+				*queue[i] = *child;
 			}
 			return 0;
 		}
@@ -57,8 +67,21 @@ int parseInputLine(char *s, node_t *n) {
 	else {
 		int len = makeargv(s, ":", &strings);
 	      	int elements_len = makeargv(&strings, " ", &strings);
-		return 0;
+		struct node *parent = strings[0];
+		int child_num = 0;
+		for(int q = 1; q < sizeof(strings); q++) {
+			for(int g = 0; g < size(queue); g++) {
+				if(strings[q]->name == queue[g]->name) {
+					parent->children[child_num] = queue[g]->id;
+					parent->num_children = child_num;
+					child_num++;
+				}
+			}
+		}
+		return child_num;
+		
 	}
+	return 0;
 
 }
 
