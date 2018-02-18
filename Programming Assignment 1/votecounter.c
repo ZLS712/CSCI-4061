@@ -15,6 +15,9 @@
 
 #define MAX_NODES 100
 
+char** candidateNames;
+int numCandidates;
+
 //Function signatures
 
 /**Function : parseInputLine
@@ -46,10 +49,15 @@ int parseInputLine(char *s, node_t *n) {
 	if(makeargv(s, ":", &strings) == sizeof(s)) {
 		int length = makeargv(s, " ", &strings);
 		if(isdigit(strings[0])) {
-			char *candidates = (char *)malloc(strings[0] * sizeof(char));
-			for(int i = 0; i < length; i++) {
+			numCandidates = atoi(strings[0]);
+			char** candidates = (char **)malloc(numCandidates * sizeof(char *));
+			candidateNames = (char **)malloc((numCandidates+1) * sizeof(char *));
+			int i;
+			for (i = 0; i < length; i++) {
 				candidates[i] = strings[i+1];
+				candidateNames[i] = strings[i+1];
 			}
+			candidateNames[i] = NULL;
 			return 0;
 		} else if(strings[0] == "Who_Won") {
 			struct node *root = (struct node *) malloc(sizeof(struct node));
@@ -115,7 +123,7 @@ int parseInput(char *filename, node_t *n) {
   // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
 		// Check if it's the root node
-		if(n->name == "Who_Won") {
+		if(strncmp(n->name, "Who_Won", strlen(n->name)) == 0) {
 			strncpy(n->prog, "./find_winner", 1024);
 		} else if(n->num_children == 0) {
 			strncpy(n->prog, "./leafcounter", 1024);
@@ -125,6 +133,27 @@ int parseInput(char *filename, node_t *n) {
 		n ++;
 	}
 }
+
+/**Function : getNodeByID
+ * Arguments : 'id' - an integer representing the id of
+ *						 the node
+ * About getNodeByID: getNodeByID returns the node that
+ * corresponds to 'id'
+ */
+ node_t* getNodeByID(int id) {
+
+ }
+
+ /**Function : itoa
+  *  Arguments : 'n' an integer
+	*
+	*  About itoa : itoa returns a string describing 'n';
+  */
+ char* itoa(int n) {
+	 char* buf = (char *)malloc(sizeof(int) * 4 + 1);
+	 sprintf(buf, "%d", n);
+	 return buf;
+ }
 
 /**Function : execNodes
  * Arguments: 'n' - Pointer to Nodes to be allocated by parsing
@@ -136,16 +165,80 @@ int parseInput(char *filename, node_t *n) {
 void execNodes(node_t *n) {
 	if(n->num_children == 0) {
 		// Exec on leafnodes
-	} else if (n->name != "Who_Won") {
-		while(n->children != NULL) {
-			// Call execNodes with these children after forking
+		char fileName[] = "Output_";
+		strcat(fileName, n->name);
+		int fd = open(fileName, O_WRONLY|O_CREAT);
+		dup2(fd, STDOUT_FILENO);
+		//chmod(fd, 700);
+		// Program Name, Input File Name, Output File Name,
+		// Number of candidates, Names of candidates, NULL
+		int argsLength = 5 + numCandidates;
+		char* args[argsLength];
+		args[0] = "votecounter";
+		char* tempVar = (char*)malloc(strlen(n->name)+1);
+		strcpy(tempVar, n->name);
+		args[1] = tempVar;
+		args[2] = fileName;
+		args[3] = itoa(numCandidates);
+		int i;
+		for(i = 4; candidateNames[i-4] != NULL; i++) {
+			args[i] = candidateNames[i-4];
 		}
-		// Once back in the parent process, exec this node with aggregate_votes
+		args[i] = NULL;
+		execv("leafcounter", args);
+		return;
 	} else {
-		// Exec with find_winner
+		pid_t pid;
+		char* childOutputFileNames[n->num_children];
+		int i;
+		for(i = 0; i < n->num_children; i ++) {
+			node_t* childNode = getNodeByID(n->children[i]);
+			pid = fork();
+			if (pid == 0) {
+				execNodes(childNode);
+			} else {
+				wait(&pid);
+				char outputName[] = "Output_";
+				strcat(outputName, childNode->name);
+				char* tempVar = (char*)malloc((strlen(outputName)+1)*sizeof(char));
+				strcpy(tempVar, outputName);
+				childOutputFileNames[i] = tempVar;
+				continue;
+			}
+		}
+		if (pid != 0) {
+			wait(&pid);
+			// Program Name, Number of Input Files, [Input Files' Names,]
+			// Output File Name, Number of candidates, [Names of candidates,] NULL
+			int argsLength = 5 + n->num_children + numCandidates;
+			char* args[argsLength];
+			args[0] = "votecounter";
+			args[1] = itoa(n->num_children);
+			// INSERT INPUT FILES' NAMES
+			int i;
+			for (i = 2; i < n->num_children; i ++) {
+				args[i] = childOutputFileNames[i-2];
+			}
+			// INSERT OUTPUT FILE NAME
+			args[i++] = "Output_";
+			strcat(args[i], n->name);
+			args[i++] = itoa(numCandidates);
+			int valToSubtract = i;
+			for(; candidateNames[i-valToSubtract] != NULL; i ++) {
+				args[i] = candidateNames[i-valToSubtract];
+			}
+			args[i] = NULL;
+			if (strncmp(n->name, "Who_Won", strlen(n->name)) != 0) {
+				chmod("aggregate_votes", 700);
+				execv("aggregate_votes", args);
+			} else {
+				chmod("find_winner", 700);
+				execv("find_winner", args);
+			}
+			return;
+		}
 	}
 }
-
 
 int main(int argc, char **argv){
 
@@ -164,9 +257,12 @@ int main(int argc, char **argv){
 	//Call execNodes on the root node
 	//Written by Shri on Wednesday Feb 14 at 1:29 PM
 
-	while(mainnodes != NULL && mainnodes->name != "Who_Won") {
+	// Not sure if this is right
+	while(mainnodes != NULL && strncmp(mainnodes->name, "Who_Won", strlen(mainnodes->name)) != 0) {
 		mainnodes ++;
 	}
+
+
 
 	if (mainnodes != NULL) {
 		execNodes(mainnodes);
