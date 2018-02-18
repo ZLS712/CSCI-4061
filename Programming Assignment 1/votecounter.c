@@ -49,10 +49,9 @@ int parseInputLine(char *s, node_t *n) {
 			char *candidates = (char *)malloc(strings[0] * sizeof(char));
 			for(int i = 0; i < length; i++) {
 				candidates[i] = strings[i+1];
-				}
+			}
 			return 0;
-	}
-		else if(strings[0] == "Who_Won") {
+		} else if(strings[0] == "Who_Won") {
 			struct node *root = (struct node *) malloc(sizeof(struct node));
 			root->name = "Who_Won";
 			node **queue = (node **)malloc(sizeof(strings) * sizeof(node));
@@ -63,10 +62,9 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			return 0;
 		}
-	}
-	else {
+	} else {
 		int len = makeargv(s, ":", &strings);
-	      	int elements_len = makeargv(&strings, " ", &strings);
+	  int elements_len = makeargv(&strings, " ", &strings);
 		struct node *parent = strings[0];
 		int child_num = 0;
 		for(int q = 1; q < sizeof(strings); q++) {
@@ -79,10 +77,8 @@ int parseInputLine(char *s, node_t *n) {
 			}
 		}
 		return child_num;
-		
 	}
 	return 0;
-
 }
 
 /**Function : parseInput
@@ -116,7 +112,7 @@ int parseInput(char *filename, node_t *n) {
 		}
 	}
 
-        // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
+  // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
 		// Check if it's the root node
 		if(n->name == "Who_Won") {
@@ -138,7 +134,16 @@ int parseInput(char *filename, node_t *n) {
  * can and should be running in a parallel fashion
  * */
 void execNodes(node_t *n) {
-
+	if(n->num_children == 0) {
+		// Exec on leafnodes
+	} else if (n->name != "Who_Won") {
+		while(n->children != NULL) {
+			// Call execNodes with these children after forking
+		}
+		// Once back in the parent process, exec this node with aggregate_votes
+	} else {
+		// Exec with find_winner
+	}
 }
 
 
