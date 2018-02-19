@@ -259,10 +259,8 @@ void execNodes(node_t *n) {
 			}
 			args[i] = NULL;
 			if (strncmp(n->name, "Who_Won", strlen(n->name)) != 0) {
-				chmod("aggregate_votes", 700);
 				execv("aggregate_votes", args);
 			} else {
-				chmod("find_winner", 700);
 				execv("find_winner", args);
 			}
 			return;
