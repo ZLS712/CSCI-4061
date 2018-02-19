@@ -86,6 +86,8 @@ int parseInputLine(char *s, node_t *n) {
 			candidateNames[i] = NULL;
 			return 0;
 		}
+
+		printf("parseInputLine works");
 	}
 
 	//if a colon is present in the line, it is describing a parent and its child nodes
