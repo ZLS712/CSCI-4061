@@ -61,6 +61,9 @@ int parseInputLine(char *s, node_t *n) {
 		//checks if the line passed is the list of all of the nodes that need to be created
 		if(strcmp(strings[0],"Who_Won")) {
 
+			// DEBUG printf
+			printf("checkpoint1");
+
 			struct node *root = (struct node *) malloc(sizeof(struct node));
 			strcpy(root->name,"Who_Won");
 			*queue[0] = *root;
@@ -70,15 +73,18 @@ int parseInputLine(char *s, node_t *n) {
 				struct node *child = newNode(strings[i], i);
 				*queue[i] = *child;
 			}
+			// DEBUG printf
+			printf("checkpoint2");
 			return 0;
-		}
-
-		//if not the list of nodes to be created, it must be the list of candidates. This case creates an array to store the candidates names
-		else {
+			//if not the list of nodes to be created, it must be the list of candidates. This case creates an array to store the candidates names
+		}	else {
 			numCandidates = atoi(strings[0]);
 			char** candidates = (char **)malloc(numCandidates * sizeof(char *));
 			candidateNames = (char **)malloc((numCandidates+1) * sizeof(char *));
 			int i;
+
+			// DEBUG printf
+			printf("checkpoint3");
 			for (i = 0; i < length; i++) {
 				candidates[i] = strings[i+1];
 				candidateNames[i] = strings[i+1];
@@ -86,18 +92,18 @@ int parseInputLine(char *s, node_t *n) {
 			candidateNames[i] = NULL;
 			return 0;
 		}
-
+		// DEBUG printf
+		printf("checkpoint4");
 		printf("parseInputLine works");
-	}
-
-	//if a colon is present in the line, it is describing a parent and its child nodes
-	else {
+		//if a colon is present in the line, it is describing a parent and its child nodes
+	}	else {
 		//first delimit by the presence of the colon
 		int len = makeargv(s, ":", &strings);
 
 		//Delimit by spaces
 		int elements_len = makeargv(*strings, " ", &strings);
-
+		// DEBUG printf
+		printf("checkpoint5");
 		//Create space for the parent node
 		struct node *parent = (struct node *)malloc(sizeof(struct node));
 		strcpy(parent->name,strings[0]);
@@ -113,6 +119,8 @@ int parseInputLine(char *s, node_t *n) {
 				}
 			}
 		}
+		// DEBUG printf
+		printf("checkpoint6");
 		return child_num;
 	}
 	return 0;
