@@ -158,11 +158,17 @@ int parseInput(char *filename, node_t *n) {
 	//int to keep track of total nodes allocated
 	int total = 0;
 
+	// DEBUG printf
+	printf("checkpoint0001");
+
 	while((buf = read_line(buf, f)) != NULL) {
 		if(buf[0] != '#') {
 			total = total + parseInputLine(buf, n);
 		}
 	}
+
+	// DEBUG printf
+	printf("checkpoint0002");
 
   // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
