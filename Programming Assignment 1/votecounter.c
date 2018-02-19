@@ -45,7 +45,7 @@ struct node *newNode(char *name, int id) {
 }
 
 
-/* 
+/*
  *
  *
  *
@@ -77,7 +77,7 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			candidateNames[i] = NULL;
 			return 0;
-		} 
+		}
 	} else {
 		int len = makeargv(s, ":", &strings);
 		int elements_len = makeargv(*strings, " ", &strings);
@@ -147,16 +147,6 @@ int parseInput(char *filename, node_t *n) {
 	return total;
 }
 
-/**Function : getNodeByID
- * Arguments : 'id' - an integer representing the id of
- *						 the node
- * About getNodeByID: getNodeByID returns the node that
- * corresponds to 'id'
- */
- node_t* getNodeByID(int id) {
-
- }
-
  /**Function : itoa
   *  Arguments : 'n' an integer
 	*
@@ -205,7 +195,7 @@ void execNodes(node_t *n) {
 		char* childOutputFileNames[n->num_children];
 		int i;
 		for(i = 0; i < n->num_children; i ++) {
-			node_t* childNode = getNodeByID(n->children[i]);
+			node_t* childNode = findNodeByID(n, n->children[i]);
 			pid = fork();
 			if (pid == 0) {
 				execNodes(childNode);
