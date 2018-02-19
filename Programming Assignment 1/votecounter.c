@@ -209,8 +209,6 @@ void execNodes(node_t *n) {
 		char fileName[] = "Output_";
 		strcat(fileName, n->name);
 		int fd = open(fileName, O_WRONLY|O_CREAT);
-		dup2(fd, STDOUT_FILENO);
-		//chmod(fd, 700);
 		// Program Name, Input File Name, Output File Name,
 		// Number of candidates, Names of candidates, NULL
 		int argsLength = 5 + numCandidates;
@@ -281,17 +279,23 @@ void execNodes(node_t *n) {
 
 int main(int argc, char **argv){
 
+	printf("If this doesn't work, I'm gonna cry");
 	//Allocate space for MAX_NODES to node pointer
 	struct node* mainnodes=(struct node*)malloc(sizeof(struct node)*MAX_NODES);
+
+	printf("If this doesn't work, I'm gonna cry - 2");
 
 	if (argc != 2){
 		printf("Usage: %s Program\n", argv[0]);
 		return -1;
 	}
 
+	printf("If this doesn't work, I'm gonna cry - 3");
+
 	//call parseInput
 	int num = parseInput(argv[1], mainnodes);
 
+	printf("If this doesn't work, I'm gonna cry - 4");
 
 	//Call execNodes on the root node
 	//Written by Shri on Wednesday Feb 14 at 1:29 PM
