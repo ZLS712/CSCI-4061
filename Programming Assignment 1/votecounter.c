@@ -47,10 +47,14 @@ struct node *newNode(char *name, int id) {
 }
 
 int parseInputLine(char *s, node_t *n) {
+	// DEBUG printf
+	printf("checkpoint0");
 
 	//first creating space for the array of strings
 	char **strings = (char **)malloc(1024 * sizeof(char *));
 
+	// DEBUG printf
+	printf("checkpoint02");
 	//queue is an array that stores all of the nodes
 	struct node **queue = (struct node **)malloc(sizeof(strings) * sizeof(struct node));
 
