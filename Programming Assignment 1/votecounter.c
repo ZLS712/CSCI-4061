@@ -35,20 +35,38 @@ int numCandidates;
  * You can choose to do this by having a pointer to other nodes, or in a list etc-
  */
 
+/* function to create new Nodes and assign name and id
+ */
 struct node *newNode(char *name, int id) {
 	struct node *temp = (struct node *)malloc(sizeof(struct node));
-	temp->name = name;
+	strcpy(temp->name, name);
 	temp->id = id;
 	return temp;
 }
 
 
-/** This isn't done quite yet, but here's what I have so far **/
+/* 
+ *
+ *
+ *
+ *
+ */
 int parseInputLine(char *s, node_t *n) {
 	char **strings = (char **)malloc(1024 * sizeof(char *));
+	struct node **queue = (struct node **)malloc(sizeof(strings) * sizeof(struct node));
 	if(makeargv(s, ":", &strings) == sizeof(s)) {
 		int length = makeargv(s, " ", &strings);
-		if(isdigit(strings[0])) {
+		if(strcmp(strings[0],"Who_Won")) {
+			struct node *root = (struct node *) malloc(sizeof(struct node));
+			strcpy(root->name,"Who_Won");
+			*queue[0] = *root;
+			for(int i = 1; i < sizeof(strings); i++) {
+				struct node *child = newNode(strings[i], i);
+				*queue[i] = *child;
+			}
+			return 0;
+		}
+		else {
 			numCandidates = atoi(strings[0]);
 			char** candidates = (char **)malloc(numCandidates * sizeof(char *));
 			candidateNames = (char **)malloc((numCandidates+1) * sizeof(char *));
@@ -59,25 +77,16 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			candidateNames[i] = NULL;
 			return 0;
-		} else if(strings[0] == "Who_Won") {
-			struct node *root = (struct node *) malloc(sizeof(struct node));
-			root->name = "Who_Won";
-			node **queue = (node **)malloc(sizeof(strings) * sizeof(node));
-			*queue[0] = *root;
-			for(int i = 1; i < sizeof(strings); i++) {
-				struct node *child = newNode(strings[i], i);
-				*queue[i] = *child;
-			}
-			return 0;
-		}
+		} 
 	} else {
 		int len = makeargv(s, ":", &strings);
-	  int elements_len = makeargv(&strings, " ", &strings);
-		struct node *parent = strings[0];
+		int elements_len = makeargv(*strings, " ", &strings);
+		struct node *parent = (struct node *)malloc(sizeof(struct node));
+		strcpy(parent->name,strings[0]);
 		int child_num = 0;
 		for(int q = 1; q < sizeof(strings); q++) {
-			for(int g = 0; g < size(queue); g++) {
-				if(strings[q]->name == queue[g]->name) {
+			for(int g = 0; g < sizeof(*queue); g++) {
+				if(strings[q] == queue[g]->name) {
 					parent->children[child_num] = queue[g]->id;
 					parent->num_children = child_num;
 					child_num++;
@@ -114,9 +123,12 @@ int parseInput(char *filename, node_t *n) {
 	// Read Input File Line By line calling parseInputLine on each line and ignore empty lines
 	char* buf = (char*)malloc(sizeof(char)*1024);
 
+	//Int to keep track of total nodes allocated
+	int total = 0;
+
 	while((buf = read_line(buf, f)) != NULL) {
 		if(buf[0] != '#') {
-			parseInputLine(buf, n);
+			total = total + parseInputLine(buf, n);
 		}
 	}
 
@@ -132,6 +144,7 @@ int parseInput(char *filename, node_t *n) {
 		}
 		n ++;
 	}
+	return total;
 }
 
 /**Function : getNodeByID

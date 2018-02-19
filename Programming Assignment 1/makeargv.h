@@ -94,7 +94,7 @@ char *trimwhitespace(char *str)
 node_t* findnode(node_t* start, char* tobefound){
 	//Find the node in question
 		node_t* temp = start;
-		while((*temp)->id!=NULL){
+		while(temp->id!=NULL){
 			if( (strcmp(temp->name, tobefound)==0)){
 				return temp;
 			}
