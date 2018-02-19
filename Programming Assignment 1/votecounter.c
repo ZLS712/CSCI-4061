@@ -47,14 +47,10 @@ struct node *newNode(char *name, int id) {
 }
 
 int parseInputLine(char *s, node_t *n) {
-	// DEBUG printf
-	printf("checkpoint0");
 
 	//first creating space for the array of strings
 	char **strings = (char **)malloc(1024 * sizeof(char *));
 
-	// DEBUG printf
-	printf("checkpoint02");
 	//queue is an array that stores all of the nodes
 	struct node **queue = (struct node **)malloc(sizeof(strings) * sizeof(struct node));
 
@@ -65,9 +61,6 @@ int parseInputLine(char *s, node_t *n) {
 		//checks if the line passed is the list of all of the nodes that need to be created
 		if(strcmp(strings[0],"Who_Won")) {
 
-			// DEBUG printf
-			printf("checkpoint1");
-
 			struct node *root = (struct node *) malloc(sizeof(struct node));
 			strcpy(root->name,"Who_Won");
 			*queue[0] = *root;
@@ -77,8 +70,6 @@ int parseInputLine(char *s, node_t *n) {
 				struct node *child = newNode(strings[i], i);
 				*queue[i] = *child;
 			}
-			// DEBUG printf
-			printf("checkpoint2");
 			return 0;
 			//if not the list of nodes to be created, it must be the list of candidates. This case creates an array to store the candidates names
 		}	else {
@@ -87,8 +78,6 @@ int parseInputLine(char *s, node_t *n) {
 			candidateNames = (char **)malloc((numCandidates+1) * sizeof(char *));
 			int i;
 
-			// DEBUG printf
-			printf("checkpoint3");
 			for (i = 0; i < length; i++) {
 				candidates[i] = strings[i+1];
 				candidateNames[i] = strings[i+1];
@@ -96,9 +85,6 @@ int parseInputLine(char *s, node_t *n) {
 			candidateNames[i] = NULL;
 			return 0;
 		}
-		// DEBUG printf
-		printf("checkpoint4");
-		printf("parseInputLine works");
 		//if a colon is present in the line, it is describing a parent and its child nodes
 	}	else {
 		//first delimit by the presence of the colon
@@ -106,8 +92,7 @@ int parseInputLine(char *s, node_t *n) {
 
 		//Delimit by spaces
 		int elements_len = makeargv(*strings, " ", &strings);
-		// DEBUG printf
-		printf("checkpoint5");
+
 		//Create space for the parent node
 		struct node *parent = (struct node *)malloc(sizeof(struct node));
 		strcpy(parent->name,strings[0]);
@@ -123,8 +108,7 @@ int parseInputLine(char *s, node_t *n) {
 				}
 			}
 		}
-		// DEBUG printf
-		printf("checkpoint6");
+
 		return child_num;
 	}
 	return 0;
@@ -158,8 +142,7 @@ int parseInput(char *filename, node_t *n) {
 	//int to keep track of total nodes allocated
 	int total = 0;
 
-	// DEBUG printf
-	printf("checkpoint0001");
+
 
 	while((buf = read_line(buf, f)) != NULL) {
 		if(buf[0] != '#') {
@@ -167,8 +150,6 @@ int parseInput(char *filename, node_t *n) {
 		}
 	}
 
-	// DEBUG printf
-	printf("checkpoint0002");
 
   // Set progs for all nodes once they've been processed "./leafcounter" "./aggregate_votes" "./find_winner"
 	while(n != NULL) {
@@ -279,23 +260,16 @@ void execNodes(node_t *n) {
 
 int main(int argc, char **argv){
 
-	printf("If this doesn't work, I'm gonna cry");
 	//Allocate space for MAX_NODES to node pointer
 	struct node* mainnodes=(struct node*)malloc(sizeof(struct node)*MAX_NODES);
-
-	printf("If this doesn't work, I'm gonna cry - 2");
 
 	if (argc != 2){
 		printf("Usage: %s Program\n", argv[0]);
 		return -1;
 	}
 
-	printf("If this doesn't work, I'm gonna cry - 3");
-
 	//call parseInput
 	int num = parseInput(argv[1], mainnodes);
-
-	printf("If this doesn't work, I'm gonna cry - 4");
 
 	//Call execNodes on the root node
 	//Written by Shri on Wednesday Feb 14 at 1:29 PM
