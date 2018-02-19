@@ -44,7 +44,16 @@ struct node *newNode(char *name, int id) {
 }
 
 
+<<<<<<< HEAD
 
+=======
+/*
+ *
+ *
+ *
+ *
+ */
+>>>>>>> 307f7faa2b20a3be6b4ca299460a412a74c06178
 int parseInputLine(char *s, node_t *n) {
 	
 	//first creating space for the array of strings
@@ -84,12 +93,17 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			candidateNames[i] = NULL;
 			return 0;
+<<<<<<< HEAD
 		} 
 	} 
 
 	//if a colon is present in the line, it is describing a parent and its child nodes
 	else {
 		//first delimit by the presence of the colon
+=======
+		}
+	} else {
+>>>>>>> 307f7faa2b20a3be6b4ca299460a412a74c06178
 		int len = makeargv(s, ":", &strings);
 
 		//Delimit by spaces
@@ -164,16 +178,6 @@ int parseInput(char *filename, node_t *n) {
 	return total;
 }
 
-/**Function : getNodeByID
- * Arguments : 'id' - an integer representing the id of
- *						 the node
- * About getNodeByID: getNodeByID returns the node that
- * corresponds to 'id'
- */
- node_t* getNodeByID(int id) {
-
- }
-
  /**Function : itoa
   *  Arguments : 'n' an integer
 	*
@@ -222,7 +226,7 @@ void execNodes(node_t *n) {
 		char* childOutputFileNames[n->num_children];
 		int i;
 		for(i = 0; i < n->num_children; i ++) {
-			node_t* childNode = getNodeByID(n->children[i]);
+			node_t* childNode = findNodeByID(n, n->children[i]);
 			pid = fork();
 			if (pid == 0) {
 				execNodes(childNode);
