@@ -11,6 +11,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include "makeargv.h"
 
 #define MAX_NODES 100
@@ -44,11 +47,11 @@ struct node *newNode(char *name, int id) {
 }
 
 int parseInputLine(char *s, node_t *n) {
-	
+
 	//first creating space for the array of strings
 	char **strings = (char **)malloc(1024 * sizeof(char *));
 
-	//queue is an array that stores all of the nodes	
+	//queue is an array that stores all of the nodes
 	struct node **queue = (struct node **)malloc(sizeof(strings) * sizeof(struct node));
 
 	//if statement checks if the line passed has a colon in it; if it doesn't it must be either the list of candidates or list of all of the nodes that need to be created
@@ -82,8 +85,8 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			candidateNames[i] = NULL;
 			return 0;
-		} 
-	} 
+		}
+	}
 
 	//if a colon is present in the line, it is describing a parent and its child nodes
 	else {
