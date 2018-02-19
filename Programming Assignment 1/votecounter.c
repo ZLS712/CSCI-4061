@@ -35,8 +35,7 @@ int numCandidates;
  * You can choose to do this by having a pointer to other nodes, or in a list etc-
  */
 
-/* function to create new Nodes and assign name and id
- */
+//function to create new nodes and assign name and id
 struct node *newNode(char *name, int id) {
 	struct node *temp = (struct node *)malloc(sizeof(struct node));
 	strcpy(temp->name, name);
@@ -45,27 +44,35 @@ struct node *newNode(char *name, int id) {
 }
 
 
-/* 
- *
- *
- *
- *
- */
+
 int parseInputLine(char *s, node_t *n) {
+	
+	//first creating space for the array of strings
 	char **strings = (char **)malloc(1024 * sizeof(char *));
+
+	//queue is an array that stores all of the nodes	
 	struct node **queue = (struct node **)malloc(sizeof(strings) * sizeof(struct node));
+
+	//if statement checks if the line passed has a colon in it; if it doesn't it must be either the list of candidates or list of all of the nodes that need to be created
 	if(makeargv(s, ":", &strings) == sizeof(s)) {
 		int length = makeargv(s, " ", &strings);
+
+		//checks if the line passed is the list of all of the nodes that need to be created
 		if(strcmp(strings[0],"Who_Won")) {
+
 			struct node *root = (struct node *) malloc(sizeof(struct node));
 			strcpy(root->name,"Who_Won");
 			*queue[0] = *root;
+
+			//for loop creates all of the nodes that need to be created and stores them in the queue
 			for(int i = 1; i < sizeof(strings); i++) {
 				struct node *child = newNode(strings[i], i);
 				*queue[i] = *child;
 			}
 			return 0;
 		}
+
+		//if not the list of nodes to be created, it must be the list of candidates. This case creates an array to store the candidates names
 		else {
 			numCandidates = atoi(strings[0]);
 			char** candidates = (char **)malloc(numCandidates * sizeof(char *));
@@ -78,12 +85,22 @@ int parseInputLine(char *s, node_t *n) {
 			candidateNames[i] = NULL;
 			return 0;
 		} 
-	} else {
+	} 
+
+	//if a colon is present in the line, it is describing a parent and its child nodes
+	else {
+		//first delimit by the presence of the colon
 		int len = makeargv(s, ":", &strings);
+
+		//Delimit by spaces
 		int elements_len = makeargv(*strings, " ", &strings);
+
+		//Create space for the parent node
 		struct node *parent = (struct node *)malloc(sizeof(struct node));
 		strcpy(parent->name,strings[0]);
 		int child_num = 0;
+
+		//for loops run through the elements in the line given and searches the queue for the node matching the child name. The id of the child is then added to the children array in the parent and the num_children for the parentis increased.
 		for(int q = 1; q < sizeof(strings); q++) {
 			for(int g = 0; g < sizeof(*queue); g++) {
 				if(strings[q] == queue[g]->name) {
@@ -123,7 +140,7 @@ int parseInput(char *filename, node_t *n) {
 	// Read Input File Line By line calling parseInputLine on each line and ignore empty lines
 	char* buf = (char*)malloc(sizeof(char)*1024);
 
-	//Int to keep track of total nodes allocated
+	//int to keep track of total nodes allocated
 	int total = 0;
 
 	while((buf = read_line(buf, f)) != NULL) {
