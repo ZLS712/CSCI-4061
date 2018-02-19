@@ -43,17 +43,6 @@ struct node *newNode(char *name, int id) {
 	return temp;
 }
 
-
-<<<<<<< HEAD
-
-=======
-/*
- *
- *
- *
- *
- */
->>>>>>> 307f7faa2b20a3be6b4ca299460a412a74c06178
 int parseInputLine(char *s, node_t *n) {
 	
 	//first creating space for the array of strings
@@ -93,17 +82,12 @@ int parseInputLine(char *s, node_t *n) {
 			}
 			candidateNames[i] = NULL;
 			return 0;
-<<<<<<< HEAD
 		} 
 	} 
 
 	//if a colon is present in the line, it is describing a parent and its child nodes
 	else {
 		//first delimit by the presence of the colon
-=======
-		}
-	} else {
->>>>>>> 307f7faa2b20a3be6b4ca299460a412a74c06178
 		int len = makeargv(s, ":", &strings);
 
 		//Delimit by spaces
